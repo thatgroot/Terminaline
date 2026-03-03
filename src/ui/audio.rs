@@ -53,6 +53,9 @@ pub fn render_audio(f: &mut Frame, app: &App, area: Rect) {
             } else {
                 "N/A".into()
             }),
+            Span::raw("  │  "),
+            Span::styled("Channels: ", Style::default().fg(Color::Cyan)),
+            Span::raw(if dev.channels > 0 { format!("{}", dev.channels) } else { "N/A".into() }),
         ]));
         lines.push(Line::from(""));
     }
@@ -89,6 +92,18 @@ pub fn render_audio(f: &mut Frame, app: &App, area: Rect) {
             } else {
                 &dev.transport
             }),
+        ]));
+        lines.push(Line::from(vec![
+            Span::raw("    "),
+            Span::styled("Sample Rate: ", Style::default().fg(Color::Magenta)),
+            Span::raw(if dev.sample_rate > 0 {
+                format!("{} Hz", dev.sample_rate)
+            } else {
+                "N/A".into()
+            }),
+            Span::raw("  │  "),
+            Span::styled("Channels: ", Style::default().fg(Color::Cyan)),
+            Span::raw(if dev.channels > 0 { format!("{}", dev.channels) } else { "N/A".into() }),
         ]));
         lines.push(Line::from(""));
     }

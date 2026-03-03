@@ -47,6 +47,10 @@ pub fn render_bluetooth(f: &mut Frame, app: &App, area: Rect) {
         Span::styled("Vendor: ", Style::default().fg(Color::Magenta)),
         Span::raw(&bt.vendor),
     ]));
+    lines.push(Line::from(vec![
+        Span::styled("  Services: ", Style::default().fg(Color::Green)),
+        Span::raw(if bt.services.is_empty() { "N/A" } else { &bt.services }),
+    ]));
     lines.push(Line::from(""));
     lines.push(Line::from(Span::styled(
         format!(

@@ -25,14 +25,12 @@ pub fn collect_wifi_info() -> WifiInfo {
     let text = cmd_output("system_profiler", &["SPAirPortDataType"]);
     for line in text.lines() {
         let l = line.trim();
-        if l.starts_with("Current Network Information:")
+        if (l.starts_with("Current Network Information:")
             || l.starts_with("SSID:")
-            || l.contains("SSID:")
-        {
-            if l.starts_with("SSID:") {
+            || l.contains("SSID:"))
+            && l.starts_with("SSID:") {
                 info.ssid = l[5..].trim().into();
             }
-        }
         if l.starts_with("BSSID:") {
             info.bssid = l[6..].trim().into();
         }
@@ -63,11 +61,10 @@ pub fn collect_wifi_info() -> WifiInfo {
             info.country_code = l[13..].trim().into();
         }
         // Get card type
-        if l.starts_with("Card Type:") || l.starts_with("Supported Channels:") {
-            if l.starts_with("Card Type:") {
+        if (l.starts_with("Card Type:") || l.starts_with("Supported Channels:"))
+            && l.starts_with("Card Type:") {
                 info.hardware = l[10..].trim().into();
             }
-        }
     }
 
     // Fallback: get current SSID from networksetup

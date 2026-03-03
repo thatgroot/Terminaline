@@ -3,7 +3,7 @@ use crate::utils::*;
 
 pub fn parse_sysinfo() -> SysInfo {
     let boot_raw = sysctl_val("kern.boottime");
-    let boot_time = boot_raw.split('}').last().unwrap_or("").trim().to_string();
+    let boot_time = boot_raw.split('}').next_back().unwrap_or("").trim().to_string();
     let sec_str = boot_raw
         .split("sec = ")
         .nth(1)
@@ -94,25 +94,25 @@ pub fn parse_battery() -> BatteryInfo {
     for line in ioreg.lines() {
         let l = line.trim().trim_start_matches('"').replace("\" = ", "=");
         if l.contains("CycleCount=") && !l.contains("Designed") {
-            b.cycle_count = l.split('=').last().unwrap_or("").trim().into();
+            b.cycle_count = l.split('=').next_back().unwrap_or("").trim().into();
         }
         if l.contains("MaxCapacity=") && !l.contains("Design") {
-            b.max_capacity = l.split('=').last().unwrap_or("").trim().into();
+            b.max_capacity = l.split('=').next_back().unwrap_or("").trim().into();
         }
         if l.contains("DesignCapacity=") {
-            b.design_capacity = l.split('=').last().unwrap_or("").trim().into();
+            b.design_capacity = l.split('=').next_back().unwrap_or("").trim().into();
         }
         if l.contains("Temperature=") {
-            b.temperature = l.split('=').last().unwrap_or("").trim().into();
+            b.temperature = l.split('=').next_back().unwrap_or("").trim().into();
         }
         if l.contains("Voltage=") {
-            b.voltage = l.split('=').last().unwrap_or("").trim().into();
+            b.voltage = l.split('=').next_back().unwrap_or("").trim().into();
         }
         if l.contains("InstantAmperage=") {
-            b.amperage = l.split('=').last().unwrap_or("").trim().into();
+            b.amperage = l.split('=').next_back().unwrap_or("").trim().into();
         }
         if l.contains("BatteryHealth=") {
-            b.condition = l.split('=').last().unwrap_or("").trim().into();
+            b.condition = l.split('=').next_back().unwrap_or("").trim().into();
         }
     }
     b

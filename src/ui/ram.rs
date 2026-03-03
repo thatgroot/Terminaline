@@ -1,5 +1,4 @@
 use crate::app::App;
-use crate::types::RegionType;
 use crate::utils::hs;
 use ratatui::{
     layout::Rect,
@@ -8,7 +7,6 @@ use ratatui::{
     widgets::{Block, Borders, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState},
     Frame,
 };
-use std::collections::HashMap;
 
 pub fn render_ram(f: &mut Frame, app: &App, area: Rect) {
     let mut lines: Vec<Line> = Vec::new();

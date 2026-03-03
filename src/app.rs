@@ -1,6 +1,5 @@
 use crate::collectors::*;
 use crate::types::*;
-use crate::utils::*;
 use std::time::{Duration, Instant};
 use sysinfo::System;
 
@@ -23,7 +22,6 @@ pub struct App {
     pub disk_list: Vec<DiskInfo>,
     pub disk_hw: DiskHwInfo,
     pub iostat: IoStatInfo,
-    pub disk_scroll: usize,
     pub disk_mode: DiskMode,
     pub disk_cursor: usize,
     pub disk_files: Vec<FileEntry>,
@@ -41,7 +39,6 @@ pub struct App {
     // New tab data
     pub processes: Vec<ProcessInfo>,
     pub process_scroll: usize,
-    pub process_sort_cpu: bool,
     pub bluetooth: BluetoothInfo,
     pub bt_scroll: usize,
     pub usb_devices: Vec<UsbDevice>,
@@ -92,7 +89,6 @@ impl App {
             disk_list: disk::collect_disks(),
             disk_hw: disk::parse_diskutil(),
             iostat: disk::parse_iostat(),
-            disk_scroll: 0,
             disk_mode: DiskMode::Partitions,
             disk_cursor: 0,
             disk_files: Vec::new(),
@@ -110,7 +106,6 @@ impl App {
             // New tabs
             processes: process::collect_processes(),
             process_scroll: 0,
-            process_sort_cpu: true,
             bluetooth: bluetooth::collect_bluetooth(),
             bt_scroll: 0,
             usb_devices: usb::collect_usb_devices(),
@@ -193,20 +188,20 @@ impl App {
         self.prev_bytes_out = total_out;
 
         // Periodic updates
-        if self.tick_count % 3 == 0 {
+        if self.tick_count.is_multiple_of(3) {
             self.activity_connections = network::parse_lsof();
             self.processes = process::collect_processes();
         }
-        if self.tick_count % 5 == 0 {
+        if self.tick_count.is_multiple_of(5) {
             self.disk_list = disk::collect_disks();
             self.battery = system::parse_battery();
             self.thermal = thermal::collect_thermal_info();
         }
-        if self.tick_count % 10 == 0 {
+        if self.tick_count.is_multiple_of(10) {
             self.services = services::collect_services();
             self.wifi = wifi::collect_wifi_info();
         }
-        if self.tick_count % 30 == 0 {
+        if self.tick_count.is_multiple_of(30) {
             self.cameras = system::collect_cameras();
             self.gpu = system::parse_gpu();
             self.disk_hw = disk::parse_diskutil();

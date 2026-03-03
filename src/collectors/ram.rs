@@ -116,8 +116,7 @@ pub fn parse_top() -> TopStats {
                         .unwrap_or(0.0);
                 }
             }
-        } else if l.starts_with("PhysMem:") {
-            let inner = &l[8..];
+        } else if let Some(inner) = l.strip_prefix("PhysMem:") {
             for part in inner.split(',') {
                 let p = part.trim();
                 if p.contains("used") {

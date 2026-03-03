@@ -52,7 +52,6 @@ pub fn collect_audio_devices() -> Vec<AudioDevice> {
                     .split(':')
                     .nth(1)
                     .unwrap_or("0")
-                    .trim()
                     .split_whitespace()
                     .next()
                     .and_then(|s| s.parse().ok())

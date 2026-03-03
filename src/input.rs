@@ -143,15 +143,13 @@ fn handle_enter(app: &mut App) {
                 app.disk_file_cursor = 0;
                 app.disk_mode = DiskMode::Files;
             }
-        } else {
-            if let Some(fe) = app.disk_files.get(app.disk_file_cursor) {
-                if fe.is_dir {
-                    let new_path = fe.path.clone();
-                    app.disk_path = new_path;
-                    app.disk_files =
-                        scan_directory(&app.disk_path, app.disk_sort, app.disk_filter_system);
-                    app.disk_file_cursor = 0;
-                }
+        } else if let Some(fe) = app.disk_files.get(app.disk_file_cursor) {
+            if fe.is_dir {
+                let new_path = fe.path.clone();
+                app.disk_path = new_path;
+                app.disk_files =
+                    scan_directory(&app.disk_path, app.disk_sort, app.disk_filter_system);
+                app.disk_file_cursor = 0;
             }
         }
     }

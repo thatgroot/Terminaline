@@ -5,7 +5,6 @@ pub fn collect_thermal_info() -> ThermalInfo {
     let mut info = ThermalInfo::default();
 
     // Read thermal sensors from ioreg
-    let text = cmd_output("ioreg", &["-r", "-n", "AppleARMIODevice", "-d", "2"]);
     // Also check for thermal-related entries
     let text2 = cmd_output("sysctl", &["-a"]);
 
@@ -36,7 +35,7 @@ pub fn collect_thermal_info() -> ThermalInfo {
         if l.contains("Temperature=") {
             let raw: f64 = l
                 .split('=')
-                .last()
+                .next_back()
                 .unwrap_or("0")
                 .trim()
                 .parse()
