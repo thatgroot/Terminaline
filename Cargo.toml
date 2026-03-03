@@ -1,0 +1,10 @@
+[package]
+name = "terminaline"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+crossterm = "0.28"
+proc-maps = "0.4"
+ratatui = "0.29"
+sysinfo = "0.38"
